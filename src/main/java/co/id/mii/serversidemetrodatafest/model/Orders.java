@@ -7,13 +7,17 @@ package co.id.mii.serversidemetrodatafest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -49,13 +53,16 @@ public class Orders {
     private User users;
     
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id")
+    @OneToOne(mappedBy = "order")
+    @JoinColumn(name = "order_id")
     private Payments payment;
     
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ticket_id")
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//    name = "orders_tickets", 
+//    joinColumns = @JoinColumn(name = "order_id"), 
+//    inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    @ManyToOne
     private Tickets ticket;
     
 }

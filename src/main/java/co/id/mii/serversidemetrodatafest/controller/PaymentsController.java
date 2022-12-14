@@ -6,6 +6,7 @@
 package co.id.mii.serversidemetrodatafest.controller;
 
 import co.id.mii.serversidemetrodatafest.model.Payments;
+import co.id.mii.serversidemetrodatafest.model.dto.request.PaymentsRequest;
 import co.id.mii.serversidemetrodatafest.service.PaymentsService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -42,8 +43,8 @@ public class PaymentsController {
     }
     
     @PostMapping
-    public ResponseEntity<Payments> create(@RequestBody Payments payments){
-        return new ResponseEntity(paymentsService.create(payments), HttpStatus.CREATED);
+    public ResponseEntity<Payments> create(@RequestBody PaymentsRequest paymentsRequest){
+        return new ResponseEntity(paymentsService.create(paymentsRequest), HttpStatus.CREATED);
     }
     
     @PutMapping("/{id}")

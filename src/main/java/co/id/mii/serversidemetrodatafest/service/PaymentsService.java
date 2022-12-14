@@ -5,8 +5,14 @@
  */
 package co.id.mii.serversidemetrodatafest.service;
 
+import co.id.mii.serversidemetrodatafest.model.Orders;
 import co.id.mii.serversidemetrodatafest.model.Payments;
+import co.id.mii.serversidemetrodatafest.model.TicketStock;
+import co.id.mii.serversidemetrodatafest.model.Tickets;
+import co.id.mii.serversidemetrodatafest.model.User;
+import co.id.mii.serversidemetrodatafest.model.dto.request.PaymentsRequest;
 import co.id.mii.serversidemetrodatafest.repository.PaymentsRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +30,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class PaymentsService {
     
     private PaymentsRepository paymentsRepository;
+    private UserService userService;
+    private TicketsService ticketsService;
+    private TicketStockService ticketStockService;
     
     ///GetAll
     public List<Payments> getAll(){
@@ -37,10 +46,43 @@ public class PaymentsService {
     }
     
     ///Create
-    public Payments create (Payments payments){
-        if(payments.getId() != null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Payment id already exists!");
+    public Payments create (PaymentsRequest paymentsRequest){
+        ///user
+        User user = new User();
+        user = userService.getById(paymentsRequest.getIdUser());
+                      
+         ///ticket
+        Tickets ticket = new Tickets();
+        ticket = ticketsService.getById(paymentsRequest.getIdTicket());
+        
+        ///order
+        Orders order = new Orders();
+        order.setOrderDate(paymentsRequest.getOrderDate());
+        order.setQuantity(paymentsRequest.getQuantity());
+        order.setUsers(user);
+        order.setTicket(ticket);
+        
+        ///total amount
+        int total = ticket.getPrice() * paymentsRequest.getQuantity();
+        
+        ///minus stock
+        TicketStock ticketStock = new TicketStock();
+        ticketStock = ticketStockService.getById(paymentsRequest.getIdTicket());
+        
+        if (ticketStock.getStock() > paymentsRequest.getQuantity()) {
+            
+            int hasil = ticketStock.getStock()-paymentsRequest.getQuantity();
+            ticketStock.setStock(hasil);   
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "To Many Orders");
         }
+        
+        ///payment
+        Payments payments = new Payments();
+        payments.setMethod(paymentsRequest.getMethod());
+        payments.setAmount(total);
+        payments.setOrder(order);
+        
         return paymentsRepository.save(payments);
     }
     

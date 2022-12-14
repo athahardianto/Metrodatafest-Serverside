@@ -5,12 +5,14 @@
  */
 package co.id.mii.serversidemetrodatafest.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -38,7 +40,7 @@ public class Payments {
     
     private int amount;
     
-    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Orders order;
     
 }

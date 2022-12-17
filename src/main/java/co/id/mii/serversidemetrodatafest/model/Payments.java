@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,11 +38,16 @@ public class Payments {
     @Column(name="payment_id")
     private Long id;
     
+    @Column(nullable = false)
     private String method;
     
+    @Column(nullable = false)
     private int amount;
     
     @OneToOne(cascade = CascadeType.ALL)
     private Orders order;
+    
+    @Enumerated(EnumType.ORDINAL)
+    private Status status;
     
 }

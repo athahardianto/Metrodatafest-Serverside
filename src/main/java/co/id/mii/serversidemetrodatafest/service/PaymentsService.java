@@ -7,6 +7,7 @@ package co.id.mii.serversidemetrodatafest.service;
 
 import co.id.mii.serversidemetrodatafest.model.Orders;
 import co.id.mii.serversidemetrodatafest.model.Payments;
+import co.id.mii.serversidemetrodatafest.model.Status;
 import co.id.mii.serversidemetrodatafest.model.TicketStock;
 import co.id.mii.serversidemetrodatafest.model.Tickets;
 import co.id.mii.serversidemetrodatafest.model.User;
@@ -14,9 +15,13 @@ import co.id.mii.serversidemetrodatafest.model.dto.request.PaymentsRequest;
 import co.id.mii.serversidemetrodatafest.repository.PaymentsRepository;
 import java.util.ArrayList;
 import java.util.List;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,6 +38,7 @@ public class PaymentsService {
     private UserService userService;
     private TicketsService ticketsService;
     private TicketStockService ticketStockService;
+    private JavaMailSender mailSender;
     
     ///GetAll
     public List<Payments> getAll(){
@@ -71,25 +77,62 @@ public class PaymentsService {
         
         if (ticketStock.getStock() > paymentsRequest.getQuantity()) {
             
-            int hasil = ticketStock.getStock()-paymentsRequest.getQuantity();
-            ticketStock.setStock(hasil);   
+//            int hasil = ticketStock.getStock()-paymentsRequest.getQuantity();
+//            ticketStock.setStock(hasil);   
+            ///payment
+            Payments payments = new Payments();
+            payments.setMethod(paymentsRequest.getMethod());
+            payments.setAmount(total);
+            payments.setStatus(Status.UNPAID);
+            payments.setOrder(order);
+
+            return paymentsRepository.save(payments);
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "To Many Orders");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Out of stock");
         }
-        
-        ///payment
-        Payments payments = new Payments();
-        payments.setMethod(paymentsRequest.getMethod());
-        payments.setAmount(total);
-        payments.setOrder(order);
-        
-        return paymentsRepository.save(payments);
+      
     }
     
     ///update
     public Payments Update(Long id, Payments payments){
         getById(id);
         payments.setId(id);
+        payments = paymentsRepository.save(payments);
+        if(payments.getStatus()== Status.PAID){
+            Orders order = new Orders();
+            order = payments.getOrder();
+            
+            Tickets ticket = new Tickets();
+            ticket = order.getTicket();
+            
+            TicketStock ticketStocks = new TicketStock();
+            ticketStocks = ticket.getTicketStock();
+            
+            int hasil = ticketStocks.getStock() - order.getQuantity() ;
+            
+            ticketStocks.setStock(hasil);
+            
+            User user = new User();
+            user = order.getUsers();
+            
+            String subject = "Payments";
+            String body = "Pembayaran tiket "+ ticket.getName()+" berhasil";
+
+            try {
+
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+                helper.setTo(user.getEmail());
+                helper.setSubject(subject);
+                helper.setText(body);
+
+                mailSender.send(message);
+            } catch (MessagingException e) {
+                throw new IllegalStateException("Failed to send email");
+            }
+            
+        }
         return paymentsRepository.save(payments);
     }
     

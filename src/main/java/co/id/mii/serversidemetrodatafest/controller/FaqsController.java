@@ -6,12 +6,14 @@
 package co.id.mii.serversidemetrodatafest.controller;
 
 import co.id.mii.serversidemetrodatafest.model.Faqs;
+import co.id.mii.serversidemetrodatafest.model.dto.request.FaqsRequest;
 import co.id.mii.serversidemetrodatafest.service.FaqsService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/faqs")
+@PreAuthorize("hasRole('ADMIN')")
 public class FaqsController {
     
     private FaqsService faqsService;
@@ -36,26 +39,31 @@ public class FaqsController {
         this.faqsService = faqsService;
     }
     
+    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<Faqs>> getAll(){
         return new ResponseEntity(faqsService.getAll(), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Faqs> getById(@PathVariable Long id){
         return new ResponseEntity(faqsService.getById(id), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasAuthority('CREATE_ADMIN')")
     @PostMapping
-    public ResponseEntity<Faqs> create(@RequestBody Faqs faqs){
+    public ResponseEntity<Faqs> create(@RequestBody FaqsRequest faqs){
         return new ResponseEntity(faqsService.create(faqs), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasAuthority('UPDATE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Faqs> update(@PathVariable Long id, @RequestBody Faqs faqs){
         return new ResponseEntity(faqsService.Update(id, faqs), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasAuthority('DELETE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Faqs> delete(@PathVariable Long id){
         return new ResponseEntity(faqsService.delete(id), HttpStatus.OK);

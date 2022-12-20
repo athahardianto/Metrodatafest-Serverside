@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,15 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/user")
+@PreAuthorize("hasRole('USER')")
 public class UserController {
     
     private UserService userService;
     
+    @PreAuthorize("hasAuthority('READ_ADMIN')")
     @GetMapping
     public ResponseEntity<List<User>> getAll(){
         return new ResponseEntity(userService.getAll(), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id){
         return new ResponseEntity(userService.getById(id), HttpStatus.OK);
@@ -46,11 +50,13 @@ public class UserController {
         return new ResponseEntity(userService.create(user), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasAnyAuthority('UPDATE_USER','UPDATE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user){
         return new ResponseEntity(userService.Update(id, user), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasAuthority('DELETE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<User> delete(@PathVariable Long id){
         return new ResponseEntity(userService.delete(id), HttpStatus.OK);

@@ -6,6 +6,7 @@
 package co.id.mii.serversidemetrodatafest.service;
 
 import co.id.mii.serversidemetrodatafest.model.Faqs;
+import co.id.mii.serversidemetrodatafest.model.dto.request.FaqsRequest;
 import co.id.mii.serversidemetrodatafest.repository.FaqsRespository;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -35,10 +36,13 @@ public class FaqsService {
     }
     
     ///Create
-    public Faqs create (Faqs faqs){
-        if(faqs.getId() != null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Faqss id already exists!");
-        }
+    public Faqs create (FaqsRequest faqsRequest){
+        
+        Faqs faqs = new Faqs();
+        faqs.setQuestion(faqsRequest.getQuestion());
+        faqs.setAnswer(faqsRequest.getAnswer());
+        faqs.setIsPublish(1);
+        
         return faqsRespository.save(faqs);
     }
     
@@ -46,6 +50,7 @@ public class FaqsService {
     public Faqs Update(Long id, Faqs faqs){
         getById(id);
         faqs.setId(id);
+        faqs.setIsPublish(1);
         return faqsRespository.save(faqs);
     }
     

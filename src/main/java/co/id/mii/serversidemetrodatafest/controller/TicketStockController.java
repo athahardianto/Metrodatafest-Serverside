@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,30 +28,36 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/ticketstock")
+@PreAuthorize("hasRole('ADMIN')")
 public class TicketStockController {
     
     private TicketStockService ticketStockService;
     
+    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<TicketStock>> getAll(){
         return new ResponseEntity(ticketStockService.getAll(), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<TicketStock> getById(@PathVariable Long id){
         return new ResponseEntity(ticketStockService.getById(id), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasAuthority('CREATE_ADMIN')")
     @PostMapping
     public ResponseEntity<TicketStock> create(@RequestBody TicketStock ticketStock){
         return new ResponseEntity(ticketStockService.create(ticketStock), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasAuthority('UPDATE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TicketStock> update(@PathVariable Long id, @RequestBody TicketStock ticketStock){
         return new ResponseEntity(ticketStockService.Update(id, ticketStock), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasAuthority('DELETE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<TicketStock> delete(@PathVariable Long id){
         return new ResponseEntity(ticketStockService.delete(id), HttpStatus.OK);

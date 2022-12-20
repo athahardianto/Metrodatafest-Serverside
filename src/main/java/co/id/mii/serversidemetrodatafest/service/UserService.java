@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
@@ -28,6 +29,7 @@ public class UserService {
     
     private UserRepository userRepository;
     private JavaMailSender mailSender;
+    private PasswordEncoder passwordEncoder;
     
     ///GetAll
     public List<User> getAll(){
@@ -42,12 +44,14 @@ public class UserService {
     
     ///Create
     public User create (User user){
-        
-        if(user.getId() != null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "lineup id already exists!");
-        }
-        
-        userRepository.save(user);
+         
+        User users = new User();
+        users.setEmail(user.getEmail());
+        users.setUsername(user.getUsername());
+        users.setPassword(passwordEncoder.encode(user.getPassword()));
+        users.setPhone(user.getPhone());
+        users.setRole(user.getRole());
+        userRepository.save(users);
         
         String subject = "Akun aktif";
         String body = "Akun "+ user.getUsername()+" sudah aktif";
@@ -66,7 +70,7 @@ public class UserService {
             throw new IllegalStateException("Failed to send email");
         }
         
-        return userRepository.save(user);
+        return userRepository.save(users);
     }
     
     ///update

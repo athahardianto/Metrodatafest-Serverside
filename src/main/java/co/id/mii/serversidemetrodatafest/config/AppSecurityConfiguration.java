@@ -49,7 +49,12 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login").permitAll()
+                .antMatchers(HttpMethod.GET,"/faqs/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/news/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/lineup/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/ticketstock/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/tickets/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/login/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/user").permitAll()
                 .anyRequest().authenticated()
                 .and()

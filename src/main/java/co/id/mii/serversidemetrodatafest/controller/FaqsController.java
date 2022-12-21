@@ -38,13 +38,11 @@ public class FaqsController {
         this.faqsService = faqsService;
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<Faqs>> getAll(){
         return new ResponseEntity(faqsService.getAll(), HttpStatus.OK);
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Faqs> getById(@PathVariable Long id){
         return new ResponseEntity(faqsService.getById(id), HttpStatus.OK);

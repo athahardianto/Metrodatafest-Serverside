@@ -35,13 +35,11 @@ public class LineupController {
         this.lineupService = lineupService;
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<Lineup>> getAll(){
         return new ResponseEntity(lineupService.getAll(), HttpStatus.OK);
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Lineup> getById(@PathVariable Long id){
         return new ResponseEntity(lineupService.getById(id), HttpStatus.OK);

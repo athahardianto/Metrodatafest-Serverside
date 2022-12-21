@@ -31,13 +31,11 @@ public class TicketsController {
     
     private TicketsService ticketsService;
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<Tickets>> getAll(){
         return new ResponseEntity(ticketsService.getAll(), HttpStatus.OK);
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Tickets> getById(@PathVariable Long id){
         return new ResponseEntity(ticketsService.getById(id), HttpStatus.OK);

@@ -35,13 +35,11 @@ public class NewsController {
         this.newsService = newsService;
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<News>> getAll(){
         return new ResponseEntity(newsService.getAll(), HttpStatus.OK);
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<News> getById(@PathVariable Long id){
         return new ResponseEntity(newsService.getById(id), HttpStatus.OK);

@@ -32,13 +32,11 @@ public class TicketStockController {
     
     private TicketStockService ticketStockService;
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping
     public ResponseEntity<List<TicketStock>> getAll(){
         return new ResponseEntity(ticketStockService.getAll(), HttpStatus.OK);
     }
     
-    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<TicketStock> getById(@PathVariable Long id){
         return new ResponseEntity(ticketStockService.getById(id), HttpStatus.OK);

@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/tickets")
-@PreAuthorize("hasRole('ADMIN')")
 public class TicketsController {
     
     private TicketsService ticketsService;

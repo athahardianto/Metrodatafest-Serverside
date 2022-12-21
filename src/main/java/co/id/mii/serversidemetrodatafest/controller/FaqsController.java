@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/faqs")
-@PreAuthorize("hasRole('ADMIN')")
 public class FaqsController {
     
     private FaqsService faqsService;

@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/lineup")
-@PreAuthorize("hasRole('ADMIN')")
 public class LineupController {
     
     private LineupService lineupService;

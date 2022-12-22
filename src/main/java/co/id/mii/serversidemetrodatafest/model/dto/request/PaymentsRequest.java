@@ -26,7 +26,7 @@ public class PaymentsRequest {
     
     private Date orderDate;
     
-    private Long idUser;
+    private String username;
     
     private Long idTicket;
 }

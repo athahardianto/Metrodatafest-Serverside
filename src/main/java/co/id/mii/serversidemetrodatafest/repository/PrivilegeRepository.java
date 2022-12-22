@@ -5,8 +5,7 @@
  */
 package co.id.mii.serversidemetrodatafest.repository;
 
-import co.id.mii.serversidemetrodatafest.model.User;
-import java.util.Optional;
+import co.id.mii.serversidemetrodatafest.model.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author athab
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
-    Optional<User> findByUsername(String username);
+public interface PrivilegeRepository extends JpaRepository<Privilege, Long>{
+    
 }

@@ -35,8 +35,8 @@ public class Privilege {
 
     @Column(nullable = false)
     private String name;
-
-    @ManyToMany(mappedBy = "privileges")
+    
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(mappedBy = "privileges")
     private List<Role> roles;
 }

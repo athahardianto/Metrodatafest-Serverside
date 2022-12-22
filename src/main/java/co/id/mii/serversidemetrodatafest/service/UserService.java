@@ -11,10 +11,12 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+import static org.apache.tomcat.jni.User.username;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +42,12 @@ public class UserService {
     public User getById(Long id){
         return userRepository.findById(id)
             .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found!") );
+    }
+    
+    ///GetByUsername
+    public User getByUserName(String name){
+        return userRepository.findByUsername(name)
+                .orElseThrow(()-> new UsernameNotFoundException("Username incorrect"));
     }
     
     ///Create

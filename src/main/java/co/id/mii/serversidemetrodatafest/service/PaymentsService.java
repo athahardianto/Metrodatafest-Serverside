@@ -55,7 +55,7 @@ public class PaymentsService {
     public Payments create (PaymentsRequest paymentsRequest){
         ///user
         User user = new User();
-        user = userService.getById(paymentsRequest.getIdUser());
+        user = userService.getByUserName(paymentsRequest.getUsername());
                       
          ///ticket
         Tickets ticket = new Tickets();
@@ -77,8 +77,6 @@ public class PaymentsService {
         
         if (ticketStock.getStock() > paymentsRequest.getQuantity()) {
             
-//            int hasil = ticketStock.getStock()-paymentsRequest.getQuantity();
-//            ticketStock.setStock(hasil);   
             ///payment
             Payments payments = new Payments();
             payments.setMethod(paymentsRequest.getMethod());

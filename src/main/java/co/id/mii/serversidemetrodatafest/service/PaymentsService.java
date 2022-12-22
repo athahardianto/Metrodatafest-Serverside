@@ -51,6 +51,10 @@ public class PaymentsService {
             .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found!") );
     }
     
+    public List<Payments> getByUsername(String username){
+        return paymentsRepository.getByUsername(username);
+    }
+    
     ///Create
     public Payments create (PaymentsRequest paymentsRequest){
         ///user

@@ -45,6 +45,12 @@ public class UserController {
         return new ResponseEntity(userService.getById(id), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
+    @GetMapping("/username")
+    public ResponseEntity<User> getByEmail(@RequestParam String username){
+        return new ResponseEntity(userService.getByUserName(username), HttpStatus.OK);
+    }
+    
     @PostMapping
     public ResponseEntity<User> create(@RequestBody User user){
         return new ResponseEntity(userService.create(user), HttpStatus.CREATED);

@@ -50,6 +50,12 @@ public class UserService {
                 .orElseThrow(()-> new UsernameNotFoundException("Username incorrect"));
     }
     
+    ///getbyemail
+    public User getByEmail(String email){
+        return userRepository.findByEmail(email)
+                .orElseThrow(()-> new UsernameNotFoundException("Username incorrect"));
+    }
+    
     ///Create
     public User create (User user){
          

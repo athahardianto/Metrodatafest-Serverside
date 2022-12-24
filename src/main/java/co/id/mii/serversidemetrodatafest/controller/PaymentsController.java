@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -63,6 +64,12 @@ public class PaymentsController {
     @PutMapping("/{id}")
     public ResponseEntity<Payments> update(@PathVariable Long id, @RequestBody Payments payments){
         return new ResponseEntity(paymentsService.Update(id, payments), HttpStatus.CREATED);
+    }
+    
+    @PreAuthorize("hasAnyAuthority('UPDATE_USER','UPDATE_ADMIN')")
+    @PutMapping("/upload/{id}")
+    public ResponseEntity<Payments> updateUser(@PathVariable Long id,@RequestParam(value="file") MultipartFile file){
+        return new ResponseEntity(paymentsService.updateUser(id, file), HttpStatus.CREATED);
     }
     
     @PreAuthorize("hasAuthority('DELETE_ADMIN')")

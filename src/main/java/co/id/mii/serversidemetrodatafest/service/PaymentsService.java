@@ -13,7 +13,9 @@ import co.id.mii.serversidemetrodatafest.model.Tickets;
 import co.id.mii.serversidemetrodatafest.model.User;
 import co.id.mii.serversidemetrodatafest.model.dto.request.PaymentsRequest;
 import co.id.mii.serversidemetrodatafest.repository.PaymentsRepository;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -23,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -87,6 +91,7 @@ public class PaymentsService {
             payments.setAmount(total);
             payments.setStatus(Status.UNPAID);
             payments.setOrder(order);
+            payments.setImage("kosong");
 
             return paymentsRepository.save(payments);
         }else{
@@ -135,6 +140,29 @@ public class PaymentsService {
             }
             
         }
+        return paymentsRepository.save(payments);
+    }
+    
+    ///update payments buat user
+    public Payments updateUser(Long id, MultipartFile file){
+        
+        Payments payments = new Payments();
+        payments = getById(id);
+        payments.setId(id);
+        
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        if(fileName.contains(".."))
+		{
+			System.out.println("not a a valid file");
+		}
+		try {
+			payments.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        payments.setStatus(Status.REVIEW);
+        
         return paymentsRepository.save(payments);
     }
     

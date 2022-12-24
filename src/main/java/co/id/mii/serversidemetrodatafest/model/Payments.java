@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.Lob;
 
 /**
  *
@@ -49,5 +50,9 @@ public class Payments {
     
     @Enumerated(EnumType.ORDINAL)
     private Status status;
+    
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String image;
     
 }

@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -47,8 +51,8 @@ public class LineupController {
     
     @PreAuthorize("hasAuthority('CREATE_ADMIN')")
     @PostMapping
-    public ResponseEntity<Lineup> create(@RequestBody Lineup lineup){
-        return new ResponseEntity(lineupService.create(lineup), HttpStatus.CREATED);
+    public ResponseEntity<Lineup> create(@RequestParam(value="guestStar")String guestStar,@RequestParam(value="schedule") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date schedule, @RequestParam(value="file") String file){
+        return new ResponseEntity(lineupService.create(guestStar, schedule, file), HttpStatus.CREATED);
     }
     
     @PreAuthorize("hasAuthority('UPDATE_ADMIN')")

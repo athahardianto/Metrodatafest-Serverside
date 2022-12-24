@@ -7,10 +7,16 @@ package co.id.mii.serversidemetrodatafest.service;
 
 import co.id.mii.serversidemetrodatafest.model.Lineup;
 import co.id.mii.serversidemetrodatafest.repository.LineupRepository;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
@@ -35,10 +41,19 @@ public class LineupService {
     }
     
     ///Create
-    public Lineup create (Lineup lineup){
-        if(lineup.getId() != null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "lineup id already exists!");
-        }
+    public Lineup create (String guestStar, Date schedule, String file){
+        
+        Lineup lineup = new Lineup();
+        lineup.setGuestStar(guestStar);
+        lineup.setSchedule(schedule);
+        lineup.setImage(file);
+        
+//        try {
+//		lineup.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+//	} catch (IOException e) {
+//			e.printStackTrace();
+//	}
+        
         return lineupRepository.save(lineup);
     }
     

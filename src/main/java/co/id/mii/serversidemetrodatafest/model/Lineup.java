@@ -6,11 +6,14 @@
 package co.id.mii.serversidemetrodatafest.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,5 +37,9 @@ public class Lineup {
     
     private String guestStar;
     
-    private Timestamp schedule;
+    private Date schedule;
+    
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String image;
 }

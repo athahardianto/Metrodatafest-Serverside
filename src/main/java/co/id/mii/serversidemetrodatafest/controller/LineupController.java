@@ -57,8 +57,8 @@ public class LineupController {
     
     @PreAuthorize("hasAuthority('UPDATE_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Lineup> update(@PathVariable Long id, @RequestBody Lineup lineup){
-        return new ResponseEntity(lineupService.Update(id, lineup), HttpStatus.CREATED);
+    public ResponseEntity<Lineup> update(@PathVariable Long id, @RequestParam(value="guestStar")String guestStar,@RequestParam(value="schedule") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date schedule, @RequestParam(value="file") String file){
+        return new ResponseEntity(lineupService.Update(id, guestStar, schedule, file), HttpStatus.CREATED);
     }
     
     @PreAuthorize("hasAuthority('DELETE_ADMIN')")

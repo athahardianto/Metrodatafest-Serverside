@@ -58,9 +58,13 @@ public class LineupService {
     }
     
     ///update
-    public Lineup Update(Long id, Lineup lineup){
+    public Lineup Update(Long id, String guestStar, Date schedule, String file){
         getById(id);
+        Lineup lineup = new Lineup();
         lineup.setId(id);
+        lineup.setGuestStar(guestStar);
+        lineup.setSchedule(schedule);
+        lineup.setImage(file);
         return lineupRepository.save(lineup);
     }
     

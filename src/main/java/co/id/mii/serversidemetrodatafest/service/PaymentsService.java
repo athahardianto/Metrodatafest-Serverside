@@ -144,22 +144,23 @@ public class PaymentsService {
     }
     
     ///update payments buat user
-    public Payments updateUser(Long id, MultipartFile file){
+    public Payments updateUser(Long id, String file){
         
         Payments payments = new Payments();
         payments = getById(id);
         payments.setId(id);
+        payments.setImage(file);
         
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        if(fileName.contains(".."))
-		{
-			System.out.println("not a a valid file");
-		}
-		try {
-			payments.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//        if(fileName.contains(".."))
+//		{
+//			System.out.println("not a a valid file");
+//		}
+//		try {
+//			payments.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
         
         payments.setStatus(Status.REVIEW);
         

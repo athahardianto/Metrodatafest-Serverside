@@ -5,8 +5,10 @@
  */
 package co.id.mii.serversidemetrodatafest.service;
 
+import co.id.mii.serversidemetrodatafest.model.Role;
 import co.id.mii.serversidemetrodatafest.model.User;
 import co.id.mii.serversidemetrodatafest.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -32,6 +34,7 @@ public class UserService {
     private UserRepository userRepository;
     private JavaMailSender mailSender;
     private PasswordEncoder passwordEncoder;
+    private RoleService roleService;
     
     ///GetAll
     public List<User> getAll(){
@@ -51,10 +54,10 @@ public class UserService {
     }
     
     ///getbyemail
-    public User getByEmail(String email){
-        return userRepository.findByEmail(email)
-                .orElseThrow(()-> new UsernameNotFoundException("Username incorrect"));
-    }
+//    public User getByEmail(String email){
+//        return userRepository.findByEmail(email)
+//                .orElseThrow(()-> new UsernameNotFoundException("Username incorrect"));
+//    }
     
     ///Create
     public User create (User user){
@@ -64,7 +67,9 @@ public class UserService {
         users.setUsername(user.getUsername());
         users.setPassword(passwordEncoder.encode(user.getPassword()));
         users.setPhone(user.getPhone());
-        users.setRole(user.getRole());
+        List<Role> role = new ArrayList<>();
+        role.add(roleService.getById(2L));
+        users.setRole(role);
         userRepository.save(users);
         
         String subject = "Akun aktif";

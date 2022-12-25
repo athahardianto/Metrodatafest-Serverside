@@ -47,7 +47,7 @@ public class UserController {
     
     @PreAuthorize("hasAnyAuthority('READ_ADMIN','READ_USER')")
     @GetMapping("/username")
-    public ResponseEntity<User> getByEmail(@RequestParam String username){
+    public ResponseEntity<User> getByUsername(@RequestParam String username){
         return new ResponseEntity(userService.getByUserName(username), HttpStatus.OK);
     }
     

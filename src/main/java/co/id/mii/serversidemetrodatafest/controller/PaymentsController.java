@@ -68,7 +68,7 @@ public class PaymentsController {
     
     @PreAuthorize("hasAnyAuthority('UPDATE_USER','UPDATE_ADMIN')")
     @PutMapping("/upload/{id}")
-    public ResponseEntity<Payments> updateUser(@PathVariable Long id,@RequestParam(value="file") MultipartFile file){
+    public ResponseEntity<Payments> updateUser(@PathVariable Long id,@RequestParam(value="file") String file){
         return new ResponseEntity(paymentsService.updateUser(id, file), HttpStatus.CREATED);
     }
     

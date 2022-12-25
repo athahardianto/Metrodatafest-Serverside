@@ -94,9 +94,17 @@ public class UserService {
     
     ///update
     public User Update(Long id, User user){
-        getById(id);
-        user.setId(id);
-        return userRepository.save(user);
+        User notChange = new User();
+        notChange = getById(id);
+//        user.setId(id);
+        User users = new User();
+        users.setId(id);
+        users.setEmail(user.getEmail());
+        users.setUsername(user.getUsername());
+        users.setRole(notChange.getRole());
+        users.setPassword(passwordEncoder.encode(user.getPassword()));
+        users.setPhone(user.getPhone());
+        return userRepository.save(users);
     }
     
     ///delete

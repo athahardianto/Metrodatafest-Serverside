@@ -55,8 +55,8 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/ticketstock/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/tickets/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/user").permitAll()
-                .antMatchers(HttpMethod.POST,"/user/admin").permitAll()
+                .antMatchers(HttpMethod.POST,"/profile").permitAll()
+                .antMatchers(HttpMethod.POST,"/profile/admin").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

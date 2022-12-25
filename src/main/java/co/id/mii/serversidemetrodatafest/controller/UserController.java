@@ -51,22 +51,6 @@ public class UserController {
         return new ResponseEntity(userService.getByUserName(username), HttpStatus.OK);
     }
     
-    @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user){
-        return new ResponseEntity(userService.create(user), HttpStatus.CREATED);
-    }
-    
-    @PostMapping("/admin")
-    public ResponseEntity<User> createAdmin(@RequestBody User user){
-        return new ResponseEntity(userService.createAdmin(user), HttpStatus.CREATED);
-    }
-    
-    @PreAuthorize("hasAnyAuthority('UPDATE_USER','UPDATE_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user){
-        return new ResponseEntity(userService.Update(id, user), HttpStatus.CREATED);
-    }
-    
     @PreAuthorize("hasAuthority('DELETE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<User> delete(@PathVariable Long id){

@@ -59,7 +59,7 @@ public class UserService {
 //                .orElseThrow(()-> new UsernameNotFoundException("Username incorrect"));
 //    }
     
-    ///Create
+    ///Create User
     public User create (User user){
          
         User users = new User();
@@ -69,6 +69,39 @@ public class UserService {
         users.setPhone(user.getPhone());
         List<Role> role = new ArrayList<>();
         role.add(roleService.getById(2L));
+        users.setRole(role);
+        userRepository.save(users);
+        
+        String subject = "Akun aktif";
+        String body = "Akun "+ user.getUsername()+" sudah aktif";
+        
+        try {
+            
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            
+            helper.setTo(user.getEmail());
+            helper.setSubject(subject);
+            helper.setText(body);
+            
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new IllegalStateException("Failed to send email");
+        }
+        
+        return userRepository.save(users);
+    }
+    
+     ///Create User
+    public User createAdmin (User user){
+         
+        User users = new User();
+        users.setEmail(user.getEmail());
+        users.setUsername(user.getUsername());
+        users.setPassword(passwordEncoder.encode(user.getPassword()));
+        users.setPhone(user.getPhone());
+        List<Role> role = new ArrayList<>();
+        role.add(roleService.getById(1L));
         users.setRole(role);
         userRepository.save(users);
         

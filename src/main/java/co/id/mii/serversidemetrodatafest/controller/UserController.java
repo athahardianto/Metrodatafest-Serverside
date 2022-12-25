@@ -56,6 +56,11 @@ public class UserController {
         return new ResponseEntity(userService.create(user), HttpStatus.CREATED);
     }
     
+    @PostMapping("/admin")
+    public ResponseEntity<User> createAdmin(@RequestBody User user){
+        return new ResponseEntity(userService.createAdmin(user), HttpStatus.CREATED);
+    }
+    
     @PreAuthorize("hasAnyAuthority('UPDATE_USER','UPDATE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user){

@@ -55,7 +55,7 @@ public class ProfileController {
     
     @PreAuthorize("hasAnyAuthority('READ_USER','READ_ADMIN')")
     @GetMapping("/username")
-    public ResponseEntity<List<Profile>> getByUsername(@RequestParam String username){
+    public ResponseEntity<Profile> getByUsername(@RequestParam String username){
         return new ResponseEntity(profileService.getByUsername(username), HttpStatus.OK);
     }
     

@@ -21,6 +21,6 @@ import org.springframework.stereotype.Repository;
 public interface ProfileRepository extends JpaRepository<Profile, Long>{
     Optional<Profile> findByFullname(String username);
     
-    @Query(value = "SELECT * FROM profile a , user b WHERE b.username=?", nativeQuery = true)
-    public List<Profile> getByUsername(String username);
+    @Query(value = "SELECT * FROM profile a , user b WHERE b.username=? AND a.user_user_id=b.user_id", nativeQuery = true)
+    public Profile getByUsername(String username);
 }

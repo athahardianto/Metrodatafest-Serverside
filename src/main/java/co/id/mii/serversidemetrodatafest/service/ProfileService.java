@@ -53,7 +53,7 @@ public class ProfileService {
                 .orElseThrow(()-> new UsernameNotFoundException("Fullname incorrect"));
     }
     
-    public List<Profile> getByUsername(String username){
+    public Profile getByUsername(String username){
         return profileRepository.getByUsername(username);
     }
     

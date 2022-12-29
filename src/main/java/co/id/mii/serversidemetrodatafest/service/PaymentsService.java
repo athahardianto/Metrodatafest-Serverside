@@ -123,7 +123,60 @@ public class PaymentsService {
             user = order.getUsers();
             
             String subject = "Payments";
-            String body = "Pembayaran tiket "+ ticket.getName()+" berhasil";
+            String body = "<html>\n" +
+"\n" +
+"<head>\n" +
+"    <link href=\"https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap\" rel=\"stylesheet\">\n" +
+"    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>\n" +
+"\n" +
+"</head>\n" +
+"<style>\n" +
+"    body {\n" +
+"        text-align: center;\n" +
+"        padding: 40px 0;\n" +
+"        background: #EBF0F5;\n" +
+"    }\n" +
+"\n" +
+"    h1 {\n" +
+"        color: #0e1066;\n" +
+"        font-family: \"Nunito Sans\", \"Helvetica Neue\", sans-serif;\n" +
+"        font-weight: 900;\n" +
+"        font-size: 40px;\n" +
+"        margin-bottom: 10px;\n" +
+"    }\n" +
+"\n" +
+"    p {\n" +
+"        color: #404F5E;\n" +
+"        font-family: \"Nunito Sans\", \"Helvetica Neue\", sans-serif;\n" +
+"        font-size: 20px;\n" +
+"        margin: 0;\n" +
+"    }\n" +
+"\n" +
+"    i {\n" +
+"        color: #14186e;\n" +
+"        font-size: 100px;\n" +
+"        line-height: 200px;\n" +
+"        margin-left: -15px;\n" +
+"    }\n" +
+"\n" +
+"    .card {\n" +
+"        background: rgb(84, 53, 186);\n" +
+"        background: linear-gradient(180deg, rgba(84, 53, 186, 1) 0%, rgba(255, 255, 255, 1) 100%);\n" +
+"        padding: 60px;\n" +
+"        border-radius: 4px;\n" +
+"        box-shadow: 0 2px 3px #C8D0D8;\n" +
+"        display: inline-block;\n" +
+"        margin: 0 auto;\n" +
+"    }\n" +
+"</style>\n" +
+"\n" +
+"<body>\n"+ "        <br><br>\n" +
+"        <h1>Pembayaran Berhasil!</h1>\n" +
+"        <p>Terima kasih atas pembeliannya :)<br /> Admin kami akan segera menghubungi Anda.</p><br><br>\n" +
+"    </div>\n" +
+"</body>\n" +
+"\n" +
+"</html>";
 
             try {
 
@@ -132,7 +185,7 @@ public class PaymentsService {
 
                 helper.setTo(user.getEmail());
                 helper.setSubject(subject);
-                helper.setText(body);
+                helper.setText(body, true);
 
                 mailSender.send(message);
             } catch (MessagingException e) {
